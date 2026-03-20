@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Juego del Futuro</title>
+<style>
+body{background:#0f172a;color:white;font-family:Arial;display:flex;justify-content:center}
+.container{max-width:600px;padding:20px;text-align:center}
+.card{background:#1e293b;border-radius:14px;padding:20px;margin-top:20px}
+button{display:block;width:100%;margin:10px 0;padding:12px;border:none;border-radius:10px;background:#334155;color:white;cursor:pointer}
+button:hover{background:#475569}
+.hidden{display:none}
+.correct{background:#22c55e !important}
+.wrong{background:#ef4444 !important}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h2>✈️ Día 4</h2>
+
+<div id="story" class="card">
+<h3 id="text"></h3>
+<div id="options"></div>
+</div>
+
+<div id="final" class="card hidden">
+<h3>💖</h3>
+<p>Desbloqueaste la siguiente parte del mensaje:</p>
+<p><b>aunque todavía no nos hayamos conocido en persona</b></p>
+<p style="margin-top:15px;font-size:14px;opacity:0.8">algún día esto no va a ser un juego 💛</p>
+</div>
+
+</div>
+
+<script>
+const scenes = [
+ {
+  text: "Elegí la correcta",
+  options: [
+   {text: "seguir", correct: true}
+  ]
+ },
+ {
+  text: "Qué te gustaría hacer conmigo algún día?",
+  options: [
+   {text: "Jugar toda la noche ", correct: false},
+   {text: "Ver pelis juntos ", correct: false},
+   {text: "Viajar juntos ", correct: true}
+  ]
+ },
+ {
+  text: "A dónde vamos?",
+  options: [
+   {text: "Brasil", correct: false},
+   {text: "Bariloche", correct: true},
+   {text: "Suiza", correct: false}
+  ]
+ },
+ {
+  text: "Cuando llegamos que es lo primero que hacemos??",
+  options: [
+   {text: "Dormir", correct: false},
+   {text: "Pasear juntos", correct: true},
+   {text: "Coger", correct: false}
+  ]
+ },
+ {
+  text: "Y en ese momento cuando te tengo a mi lado, que pienso?",
+  options: [
+   {text: "Que molesta", correct: false},
+   {text: "valió la pena todo", correct: true},
+   {text: "No me gusta", correct: false}
+  ]
+ }
+];
+
+let current = 0;
+
+function loadScene(){
+ const scene = scenes[current];
+ document.getElementById('text').innerText = scene.text;
+ const optionsDiv = document.getElementById('options');
+ optionsDiv.innerHTML = '';
+
+ scene.options.forEach(opt=>{
+  const btn = document.createElement('button');
+  btn.innerText = opt.text;
+  btn.onclick = ()=>selectOption(opt, btn);
+  optionsDiv.appendChild(btn);
+ });
+}
+
+function selectOption(opt, btn){
+ if(opt.correct){
+  btn.classList.add('correct');
+  setTimeout(()=>{
+   current++;
+   if(current < scenes.length){
+    loadScene();
+   } else {
+    document.getElementById('story').classList.add('hidden');
+    document.getElementById('final').classList.remove('hidden');
+   }
+  }, 700);
+ } else {
+  btn.classList.add('wrong');
+  setTimeout(()=>{
+   alert('ELEGI BIENN');
+   location.reload();
+  }, 700);
+ }
+}
+
+loadScene();
+</script>
+
+</body>
+</html>
